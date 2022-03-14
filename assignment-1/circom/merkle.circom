@@ -16,12 +16,12 @@ template merkle(n) {
     }
 
     component computeRootNew[2];
-    var counters = 0;
+    var counter_new = 0;
     for (var j = 0; j < n / 2; j+=2) {
-        computeRootNew[counters] = mimc_hash(2);
-        computeRoot[j].hash ==> computeRootNew[counters].leaves[0];
-        computeRoot[j+1].hash ==> computeRootNew[counters].leaves[1];
-        counters++;
+        computeRootNew[counter_new] = mimc_hash(2);
+        computeRoot[j].hash ==> computeRootNew[counter_new].leaves[0];
+        computeRoot[j+1].hash ==> computeRootNew[counter_new].leaves[1];
+        counter_new++;
     }
 
     component computeRootNewNew = mimc_hash(2);
