@@ -1,2 +1,2 @@
 # ZKU
-Zero-Knowledge University Course: https://zku.one/
+Zero-Knowledge University Course by Harmony: https://zku.one/
