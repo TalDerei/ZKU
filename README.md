@@ -1,2 +1,2 @@
 # ZKU
-Zero-Knowledge University Course
+Zero-Knowledge University Course: https://zku.one/
