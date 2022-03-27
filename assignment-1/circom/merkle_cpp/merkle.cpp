@@ -1530,7 +1530,7 @@ uint sub_component_aux;
 PFrElement aux_dest = &lvar[0];
 // load src
 // end load src
-Fr_copy(aux_dest,&circuitConstants[5]);
+Fr_copy(aux_dest,&circuitConstants[0]);
 }
 {
 PFrElement aux_dest = &lvar[1];
@@ -1542,7 +1542,7 @@ Fr_copy(aux_dest,&circuitConstants[3]);
 PFrElement aux_dest = &lvar[2];
 // load src
 // end load src
-Fr_copy(aux_dest,&circuitConstants[0]);
+Fr_copy(aux_dest,&circuitConstants[5]);
 }
 {
 uint aux_create = 0;
