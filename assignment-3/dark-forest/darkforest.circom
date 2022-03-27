@@ -94,4 +94,4 @@ template darkforest() {
     return_bool <== 1;
 }
 
-component main {public [energy]} = darkforest();
+component main = darkforest();
