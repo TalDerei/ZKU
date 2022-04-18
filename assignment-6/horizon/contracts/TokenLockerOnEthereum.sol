@@ -17,6 +17,7 @@ contract TokenLockerOnEthereum is TokenLocker, OwnableUpgradeable {
         __Ownable_init();
     }
 
+    // change light client being used to verify proofs
     function changeLightClient(HarmonyLightClient newClient)
         external
         onlyOwner
@@ -24,10 +25,12 @@ contract TokenLockerOnEthereum is TokenLocker, OwnableUpgradeable {
         lightclient = newClient;
     }
 
+    // bind light client to party on the Harmony chain
     function bind(address otherSide) external onlyOwner {
         otherSideBridge = otherSide;
     }
 
+    // validate the proof by runing the verifier and checking that the checkpoint associated with the light client is valid
     function validateAndExecuteProof(
         HarmonyParser.BlockHeader memory header,
         MMRVerifier.MMRProof memory mmrProof,

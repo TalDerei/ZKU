@@ -14,6 +14,7 @@ function hexToBytes(hex) {
     return bytes;
 }
 
+// harmony prover to generate proofs of validity that transactions were included in full block to be sent to clients
 describe('HarmonyProver', function () {
     beforeEach(async function () {
         MMRVerifier = await ethers.getContractFactory("MMRVerifier");
@@ -33,11 +34,13 @@ describe('HarmonyProver', function () {
         await prover.deployed();
     });
 
+    // parse the block header
     it('parse rlp block header', async function () {
         let header = await prover.toBlockHeader(hexToBytes(headerData.rlpheader));
         expect(header.hash).to.equal(headerData.hash);
     });
 
+    // parse the trasnaction reciet 
     it('parse transaction receipt proof', async function () {
         let callback = getReceiptProof;
         let callbackArgs = [
@@ -66,6 +69,7 @@ describe('HarmonyProver', function () {
 let TokenLockerOnEthereum, tokenLocker;
 let HarmonyLightClient, lightclient;
 
+// token locker locks up tokens on ethereum and mints them on harmony
 describe('TokenLocker', function () {
     beforeEach(async function () {
         TokenLockerOnEthereum = await ethers.getContractFactory("TokenLockerOnEthereum");

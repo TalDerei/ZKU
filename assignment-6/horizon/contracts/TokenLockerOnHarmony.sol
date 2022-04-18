@@ -21,6 +21,7 @@ contract TokenLockerOnHarmony is TokenLocker, OwnableUpgradeable {
         __Ownable_init();
     }
 
+    // change light client verifying the proof submitted by some associated relayer
     function changeLightClient(EthereumLightClient newClient)
         external
         onlyOwner
@@ -32,6 +33,8 @@ contract TokenLockerOnHarmony is TokenLocker, OwnableUpgradeable {
         otherSideBridge = otherSide;
     }
 
+    // run the H-verifier to verify the proof: light clients verify the validity of 
+    // those messages using block headers and proofs of messages
     function validateAndExecuteProof(
         uint256 blockNo,
         bytes32 rootHash,

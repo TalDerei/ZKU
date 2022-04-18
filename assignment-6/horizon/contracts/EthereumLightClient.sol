@@ -66,6 +66,7 @@ contract EthereumLightClient is Ethash, Initializable, PausableUpgradeable {
 
     uint256 public finalityConfirms;
 
+    // initialize the light client on the Ethereum chain by syncing it with an initial block header
     function initialize(bytes memory _rlpHeader) external initializer {
         finalityConfirms = DEFAULT_FINALITY_CONFIRMS;
 
@@ -207,6 +208,7 @@ contract EthereumLightClient is Ethash, Initializable, PausableUpgradeable {
         return diff >= parentDiff.sub((parentDiff / 10000) * 99);
     }
 
+    // set first block as the sync block
     function _setFirstBlock(StoredBlockHeader memory toSetBlock) private {
         firstBlock = toSetBlock.hash;
 

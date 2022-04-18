@@ -81,30 +81,36 @@ contract HarmonyLightClient is
         _unpause();
     }
 
+    // renouncing admin role and assigning to a new user. There must always be an admin, or else it defaults to 'DEFAULT_ADMIN_ROLE'
     function renounceAdmin(address newAdmin) external onlyAdmin {
         require(msg.sender != newAdmin, 'cannot renounce self');
         grantRole(DEFAULT_ADMIN_ROLE, newAdmin);
         renounceRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
+    // relayer threshold for the number of relayers in the network to pass messages between chains
     function adminChangeRelayerThreshold(uint256 newThreshold) external onlyAdmin {
         relayerThreshold = newThreshold.toUint8();
         emit RelayerThresholdChanged(newThreshold);
     }
 
+    // admin has sole authority to add relayers 
     function adminAddRelayer(address relayerAddress) external onlyAdmin {
         require(!hasRole(RELAYER_ROLE, relayerAddress), "addr already has relayer role!");
         grantRole(RELAYER_ROLE, relayerAddress);
         emit RelayerAdded(relayerAddress);
     }
 
+    // admin has sole authority to remove relayers
     function adminRemoveRelayer(address relayerAddress) external onlyAdmin {
         require(hasRole(RELAYER_ROLE, relayerAddress), "addr doesn't have relayer role!");
         revokeRole(RELAYER_ROLE, relayerAddress);
         emit RelayerRemoved(relayerAddress);
     }
 
+    // initialize the client and start syncing up the chain starting from the first block header
     function initialize(
+        // first block header to start syncing from + connect light client to X number of initial relayers 
         bytes memory firstRlpHeader,
         address[] memory initialRelayers,
         uint8 initialRelayerThreshold
@@ -137,6 +143,8 @@ contract HarmonyLightClient is
 
     }
 
+    // light client only requires checkpoint blocks (1 block every x blocks, where 1 ≤ x ≤ 16384, 16384 is the #blocks per epoch) 
+    // to verify any number of Harmony transaction proofs by the clients
     function submitCheckpoint(bytes memory rlpHeader) external onlyRelayers whenNotPaused {
         HarmonyParser.BlockHeader memory header = HarmonyParser.toBlockHeader(
             rlpHeader
@@ -172,6 +180,7 @@ contract HarmonyLightClient is
         );
     }
 
+    // get the latest checkpoint associated with the epoch
     function getLatestCheckPoint(uint256 blockNumber, uint256 epoch)
         public
         view
@@ -195,6 +204,8 @@ contract HarmonyLightClient is
         checkPointBlock = checkPointBlocks[nearest];
     }
 
+
+    // check if checkpoint is valid, which means proof is valid validating any number of transactions by clients
     function isValidCheckPoint(uint256 epoch, bytes32 mmrRoot) public view returns (bool status) {
         return epochMmrRoots[epoch][mmrRoot];
     }
